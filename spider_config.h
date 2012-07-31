@@ -26,6 +26,7 @@
 #define LOG_OWNUID	2048
 #define LOG_HASH	4096
 #define LOG_NONZERO_SCORE	8192
+#define LOG_LINE	16384
 
 #define VALIDATOR_NONE	1
 #define VALIDATOR_SSN	2
@@ -105,12 +106,16 @@ int maxgroup[1000];
 // function defines
 //
 void run_spider(char *pPath);
-//struct pathlist *acquire_paths(struct pathlist *startp, char *startpath, int rec);
+void get_file_hash (char* file_path, char* result_hash);
+void split_filelist();
+void prefork_blockscan(int procs, int floop);
+void prefork_linescan(int procs);
 void acquire_paths(char *startpath, int rec);
-void scan(char *pPath);
-int is_match(char *to_match, int readSize);
-void send_match(char *rehit, char *pPath);
-void write_log(char *regex, char *frag, char *pPath);
+void scan(char *pPath, bool block);
+int is_match(char *to_match, int readSize, char* pPath, int line_num);
+void sanitize_string(char* match, int card_type, char* outstr);
+void send_match(char *rehit, char *pPath, int line);
+void write_log(char *regex, int frag, char *pPath);
 void load_regexes(void);
 void compile_regexes(void);
 void load_magic(void);
@@ -118,8 +123,7 @@ void read_config(void);
 void save_config(char *confpath);
 void set_globals(void);
 void set_fac(char *logfac);
-void craft_csv_entry(char *csventry, char *pPath, char *regex, char *hit);
-int pcre_callout_spider(pcre_callout_block *block);
+void craft_csv_entry(char *csventry, char *pPath, char *regex, int hit);
 void get_ext(char *pPath, char *ext);
 void process_zlib(char *pPath);
 void process_bzip2(char *pPath);
@@ -129,7 +133,7 @@ void make_custom_log_path(void);
 void sanitize_buf(char *buf);
 void write_footer(void);
 int validate_ssn(char *SSN);
-int validate_luhn(char *CCN);
+int luhn(char* cc);
 void read_maxgroups(char *pPath);
 void start(void *data, const char *el, const char **attr);
 void end(void *data, const char *el);

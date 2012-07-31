@@ -82,3 +82,28 @@ Future Directions:
 - something that reads PDF files
 - smarter custom-regex handling
 - all manner of things to bring it in line with Windows Spider.
+
+Updates to the stock version by Steve William (NextJump Inc.):
+
+We have updated the stock version of the spider engine to incorporate
+the following:
+- The engine is capable of running block scans and line scans.
+        - Block scans are for faster scans and are done on 64K blocks of the file.
+        - Line scans are for more detailed scans and return the exact line number
+        of the suspicious content. This is CPU intensive and slow.
+- The engine checks for the number of cores on the machine one which it will
+run and fork into (cores-1) number of processes making the scans faster.
+- Added a working Luhn's algorithm to validate the credit cards.
+- Added a new bash script that will can scan NFS mounts from multiple servers.
+
+Details:
+spider.conf has the following new directives:
+- dolinescan: 0 - disable line scan, 1 - enable line scan
+- hostip: IP of the host to be scan. Used when remote systems are scanned using NFS mounts.
+
+scan.sh:
+- This is a script to scan remote systems based on the NFS mounts they export.
+- It takes a text file with a list of IPs to scan.
+- Creates log files for every IP being scanned.
+- Cleans up the mounts after the scan.
+

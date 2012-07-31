@@ -5,3 +5,8 @@ Shawn Nock <sn253@georgetown.edu>
 
 Brian Murphy <brian@xpleomedia.com>
   - Solaris Portability Fixes
+
+Steve William <swilliam@nextjump.com>
+  - Added multi processing capabilities
+  - Added line scan and block scan options
+  - Added detailed logging
